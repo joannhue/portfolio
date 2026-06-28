@@ -1,30 +1,38 @@
 const html = document.documentElement;
-    const langBtn = document.getElementById('langBtn');
-    const menuBtn = document.getElementById('menuBtn');
-    const navLinks = document.getElementById('navLinks');
-    const year = document.getElementById('year');
-    year.textContent = new Date().getFullYear();
+const langBtn = document.getElementById('langBtn');
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+const year = document.getElementById('year');
 
-    let lang = 'en';
+if (year) year.textContent = new Date().getFullYear();
 
-    function translatePage(nextLang) {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        const value = el.getAttribute(`data-${nextLang}`);
-        if (value) el.innerHTML = value;
-      });
-      langBtn.textContent = nextLang === 'en' ? '中文' : 'EN';
-      html.lang = nextLang === 'en' ? 'en' : 'zh-CN';
-      lang = nextLang;
-    }
+let lang = 'en';
 
-    langBtn.addEventListener('click', () => {
-      translatePage(lang === 'en' ? 'zh' : 'en');
-    });
+function translatePage(nextLang) {
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const value = el.getAttribute(`data-${nextLang}`);
+    if (value) el.innerHTML = value;
+  });
 
-    menuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
+  if (langBtn) langBtn.textContent = nextLang === 'en' ? '中文' : 'EN';
+  html.lang = nextLang === 'en' ? 'en' : 'zh-CN';
+  lang = nextLang;
+}
 
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => navLinks.classList.remove('open'));
-    });
+if (langBtn) {
+  langBtn.addEventListener('click', () => {
+    translatePage(lang === 'en' ? 'zh' : 'en');
+  });
+}
+
+if (menuBtn && navLinks) {
+  menuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+}
+
+document.querySelectorAll('.navlinks a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (navLinks) navLinks.classList.remove('open');
+  });
+});
